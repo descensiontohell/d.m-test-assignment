@@ -1,5 +1,9 @@
 import os
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 """
 Django settings for gallery_backend project.
 
@@ -23,12 +27,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-e4*v!!vz$y-5q-5p=r@+1ntk3dwt@hc-ekfav@o1-ukxw(r^$5"
+# SECURITY WARNING: don't run with debug turned on in production! DEBUG = False DEBUG = True
+ALLOWED_HOSTS = ["*"]
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
+APPEND_SLASH = True
 
 # Application definition
 
@@ -39,6 +41,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "gallery_app.apps.GalleryAppConfig",
+    "rest_framework",
+    "rest_registration",
 ]
 
 MIDDLEWARE = [
@@ -92,6 +97,19 @@ DATABASES = {
     "default": db_credentials,
 }
 
+
+REST_REGISTRATION = {
+    "REGISTER_VERIFICATION_ENABLED": False,
+    "REGISTER_EMAIL_VERIFICATION_ENABLED": False,
+    "RESET_PASSWORD_VERIFICATION_ENABLED": False,
+}
+
+# REST_FRAMEWORK = {
+#     "DEFAULT_AUTHENTICATION_CLASSES": (
+#         "rest_framework.authentication.TokenAuthentication",
+#         "rest_framework.authentication.SessionAuthentication",
+#     ),
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
