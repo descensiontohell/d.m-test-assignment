@@ -75,14 +75,21 @@ WSGI_APPLICATION = "gallery_backend.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+db_credentials = {
+    "ENGINE": "django.db.backends.postgresql",
+    "NAME": os.getenv("POSTGRES_DB"),
+    "USER": os.getenv("POSTGRES_USER"),
+    "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+}
+
+if os.getenv("IS_IN_DOCKER"):
+    db_credentials["HOST"] = "db"
+else:
+    db_credentials["HOST"] = "localhost"
+    db_credentials["PORT"] = 5432
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_DB"),
-        "USER": os.getenv("POSTGRES_USER"),
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
-        "HOST": "db",
-    }
+    "default": db_credentials,
 }
 
 
