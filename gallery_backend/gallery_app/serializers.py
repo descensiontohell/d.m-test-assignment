@@ -1,5 +1,8 @@
 from django.contrib.auth.models import User
+from drf_yasg.utils import serializers
 from rest_framework.serializers import ModelSerializer
+
+from .utils import is_url_image
 from .models import Image
 
 
@@ -14,10 +17,13 @@ class AdminImageSerializer(ModelSerializer):
 class CreateImageSerializer(AdminImageSerializer):
     """Used for creating a new image"""
 
-    ...
+    def validate_image_url(self, value: str):
+        if is_url_image(value):
+            return value
+        raise serializers.ValidationError("image_url is not a valid image url")
 
 
-class ImageSerializer(ModelSerializer):
+class ImageSerializer(CreateImageSerializer):
     """Used for operations on user images"""
 
     class Meta:
