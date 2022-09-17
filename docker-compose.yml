@@ -1,26 +1,41 @@
-version: "3"
+version: "3.8"
 services:
   app:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - 8000:8000
-    depends_on:
-      - db
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
+      - DJANGO_SUPERUSER_USERNAME=${DJANGO_SUPERUSER_USERNAME}
+      - DJANGO_SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD}
+      - DJANGO_SUPERUSER_EMAIL=${DJANGO_SUPERUSER_EMAIL}
+    volumes:
+      - static_volume:/code/gallery_backend/static
+    depends_on:
+      - db
 
   db:
     image: postgres:latest
-    ports:
-      - 5432:5432
     volumes:
       - ./data/db:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
+
+  nginx:
+    build:
+      dockerfile: Nginxfile
+    ports:
+      - 6060:80
+    volumes:
+      - static_volume:/code/gallery_backend/static
+    depends_on:
+      - app
+      - db
+
+volumes:
+  static_volume:
 
