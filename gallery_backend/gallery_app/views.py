@@ -20,9 +20,6 @@ class AdminImageView(views.APIView):
         serializer = ImageSerializer(images, many=True)
         return Response(serializer.data)
 
-    def put(self, request, *args, **kwargs):
-        return Response()
-
     def delete(self, request, *args, **kwargs):
         Image.objects.all().delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -32,6 +29,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsAdminOrReadOnly]
+    http_method_names = ["get", "patch"]
 
 
 class ImageViewSet(viewsets.ModelViewSet):
@@ -39,7 +37,7 @@ class ImageViewSet(viewsets.ModelViewSet):
     permission_classes = [IsOwnerOrReadOnly]
 
     def get_queryset(self):
-        return Image.objects.filter(user=self.kwargs["user_pk"])
+        return Image.objects.filter(user=self.kwargs.get("user_pk"))
 
     def create(self, request, *args, **kwargs):
         request.data["user"] = self.request.user.id
@@ -50,7 +48,7 @@ class CurrentUserView(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = CurrentUserSerializer
 
-    def list(self, request, *args, **kwargs):
+    def retrieve(self, request, *args, **kwargs):
         user = request.user
         serializer = self.get_serializer(user)
         return Response(serializer.data)
