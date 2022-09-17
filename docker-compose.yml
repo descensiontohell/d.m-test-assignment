@@ -11,8 +11,6 @@ services:
       - DJANGO_SUPERUSER_USERNAME=${DJANGO_SUPERUSER_USERNAME}
       - DJANGO_SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD}
       - DJANGO_SUPERUSER_EMAIL=${DJANGO_SUPERUSER_EMAIL}
-    volumes:
-      - static_volume:/code/gallery_backend/static
     depends_on:
       - db
 
@@ -30,12 +28,6 @@ services:
       dockerfile: Nginxfile
     ports:
       - 6060:80
-    volumes:
-      - static_volume:/code/gallery_backend/static
     depends_on:
       - app
       - db
-
-volumes:
-  static_volume:
-
