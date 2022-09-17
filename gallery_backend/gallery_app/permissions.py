@@ -2,6 +2,8 @@ from rest_framework import permissions
 
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
+    """Permission that is used for giving users write access to their images and read only access to everyone else"""
+
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS or request.user.is_staff:
             return True
@@ -16,6 +18,8 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
 
 class IsAdminOrReadOnly(permissions.BasePermission):
+    """Permission that is used for things you better not touch"""
+
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
