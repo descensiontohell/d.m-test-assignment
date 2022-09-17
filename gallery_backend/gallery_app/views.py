@@ -1,14 +1,20 @@
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
 from rest_framework import status
-from rest_framework import generics
 from rest_framework import viewsets
 from rest_framework import views
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
+from drf_yasg.utils import swagger_auto_schema
 
 from .models import Image
-from .serializers import CurrentUserSerializer, ImageSerializer, UserSerializer, UserImagesSerializer
+from .serializers import (
+    AdminImageSerializer,
+    CreateImageSerializer,
+    CurrentUserSerializer,
+    ImageSerializer,
+    UserSerializer,
+)
 from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly
 
 
