@@ -2,8 +2,8 @@ from django.contrib.auth.models import User
 from drf_yasg.utils import serializers
 from rest_framework.serializers import ModelSerializer
 
-from .utils import is_url_image
 from .models import Image
+from .utils import is_url_image
 
 
 class AdminImageSerializer(ModelSerializer):

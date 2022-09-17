@@ -1,13 +1,12 @@
 from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
-from rest_framework import status
-from rest_framework import viewsets
-from rest_framework import views
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status, views, viewsets
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.response import Response
 
 from .models import Image
+from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
 from .serializers import (
     AdminImageSerializer,
     CreateImageSerializer,
@@ -15,7 +14,6 @@ from .serializers import (
     ImageSerializer,
     UserSerializer,
 )
-from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly
 
 
 class AdminImageView(views.APIView):
