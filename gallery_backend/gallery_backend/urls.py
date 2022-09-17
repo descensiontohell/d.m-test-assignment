@@ -17,26 +17,24 @@ from django.contrib import admin
 from django.urls import path, include
 
 from rest_framework.routers import SimpleRouter
+from rest_framework_nested import routers
 
-from gallery_app.views import (
-    CurrentUserViewSet,
-    ImagesViewSet,
-    UserImagesViewSet,
-    UserSingleImageViewSet,
-    UsersViewSet,
+from gallery_app.views import CurrentUserView, ImageViewSet, UserViewSet, AdminImageView
 )
 
 router = SimpleRouter()
+router.register(r"users", UserViewSet)
 
-router.register(r"users", UsersViewSet)
-router.register(r"images", ImagesViewSet)
+images_router = routers.NestedSimpleRouter(router, r"users", lookup="user")
+images_router.register(r"images", ImageViewSet, basename="user-images")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("users/", include("rest_registration.api.urls")),
-    path("users/me", CurrentUserViewSet.as_view({"get": "list"})),
-    path("users/<int:user_id>/images/", UserImagesViewSet.as_view({"get": "list"})),
-    path("users/<int:user_id>/images/<int:image_id>/", UserSingleImageViewSet.as_view({"get": "list"})),
+    path("images/", AdminImageView.as_view()),
+    path("accounts/", include("rest_registration.api.urls")),
+    path("users/me/", CurrentUserView.as_view({"get": "list"})),
+    path(r"", include(router.urls)),
+    path(r"", include(images_router.urls)),
 ]
 
 urlpatterns += router.urls
