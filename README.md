@@ -9,7 +9,7 @@
  - Подготовлен конфиг `docker-compose.yml` для развертывания контейнеров одной командой
  - Документация к API в `/docs/` 
 ### Технические детали
-Технологии: Python, Django REST Framework, PostgreSQL (Django ORM), nginx, Docker / docker-compose.
+Технологии: Python, Django REST Framework, PostgreSQL (Django ORM), nginx, Docker / docker-compose. Использованы библиотеки django-rest-registration для управления аккаунтами и drf-yasg для генерации Swagger
 
 Пользователь может зарегистрироваться с помощью `POST /accounts/register/` и авторизоваться с помощью `POST /accounts/login/`. После авторизации можно добавить свое изображение с помощью `POST /users/{user_id}/images/`, указав `image_url`. С помощью `HEAD` запроса происходит проверка на то, что ссылка действительно ведет на изображение. 
 
